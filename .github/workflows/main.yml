@@ -1,0 +1,29 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on pushes to the 'main' branch
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to VPS
+      run: |
+        ssh -o StrictHostKeyChecking=no root@34.72.70.72 << 'EOF'
+          cd /root/node/ranchat  # Navigate to the application directory
+          git pull origin main  # Pull the latest changes
+          npm install           # Install dependencies (if needed)
+          pm2 restart ranchat   # Restart the application with PM2
+        EOF
