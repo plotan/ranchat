@@ -62,4 +62,9 @@ export class UserManager {
       connectedUsers: this.chatPairs.size
     };
   }
+
+  getOnlineUsers() {
+    // Return all users who are either in a chat or waiting
+    return [...new Set([...this.waitingUsers, ...this.chatPairs.keys()])];
+  }
 }
