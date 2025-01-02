@@ -26,7 +26,7 @@ bot.onText(/\/start/, async (msg) => {
 
   if (userManager.isUserInChat(userId)) {
     Logger.userAction(userId, 'START_REJECTED', { userName, reason: 'already_in_chat' });
-    await bot.sendMessage(userId, "You are already in a chat. Use /end to end current chat first.");
+    await bot.sendMessage(userId, "_You are already in a chat. Use /end to end current chat first_",{ parse_mode: "Markdown" });
     return;
   }
 
@@ -37,14 +37,14 @@ bot.onText(/\/start/, async (msg) => {
     Logger.chatEvent(userId, partnerId, 'CHAT_STARTED', { userName });
     await bot.sendMessage(
       userId,
-      "_It's a match 🐣_\n\n" +
+      "_It's a match 🐣_\n" +
       "_ /next — Find new partner 🛑_\n" +
       "_ /end — Leave partner topic 💬_",
       { parse_mode: "Markdown" }
     );
     await bot.sendMessage(
       partnerId,
-      "_It's a match 🐣_\n\n" +
+      "_It's a match 🐣_\n" +
       "_ /next — Find new partner 🛑_\n" +
       "_ /end — Leave partner topic 💬_",
       { parse_mode: "Markdown" }
@@ -65,7 +65,7 @@ bot.onText(/\/end/, async (msg) => {
 
   if (!userManager.isUserInChat(userId)) {
     Logger.userAction(userId, 'END_REJECTED', { userName, reason: 'not_in_chat' });
-    await bot.sendMessage(userId, "You are not in a chat. Use /start to start finding partner.");
+    await bot.sendMessage(userId, "_You are not in a chat. Use /start to start finding partner_",{ parse_mode: "Markdown" });
     return;
   }
 
@@ -74,9 +74,9 @@ bot.onText(/\/end/, async (msg) => {
   }
 
   userManager.endChat(userId);
-  await bot.sendMessage(userId, "Chat ended. Use /start to start finding partner.");
+  await bot.sendMessage(userId, "_Chat ended. Use /start to start finding partner_",{ parse_mode: "Markdown" });
   if (partnerId) {
-    await bot.sendMessage(partnerId, "Your partner has ended the chat. Use /start to start finding partner.");
+    await bot.sendMessage(partnerId, "_Your partner has ended the chat. Use /start to start finding partner_",{ parse_mode: "Markdown" });
   }
 });
 
@@ -90,7 +90,7 @@ bot.onText(/\/next/, async (msg) => {
 
   if (!userManager.isUserInChat(userId)) {
     Logger.userAction(userId, 'NEXT_REJECTED', { userName, reason: 'not_in_chat' });
-    await bot.sendMessage(userId, "You are not in a chat. Use /start to find a partner.");
+    await bot.sendMessage(userId, "_You are not in a chat. Use /start to find a partner_",{ parse_mode: "Markdown" });
     return;
   }
 
@@ -98,7 +98,7 @@ bot.onText(/\/next/, async (msg) => {
   userManager.endChat(userId);
   if (currentPartnerId) {
     Logger.chatEvent(userId, currentPartnerId, 'CHAT_ENDED', { userName, reason: 'next' });
-    await bot.sendMessage(currentPartnerId, "Your partner has left the chat.");
+    await bot.sendMessage(currentPartnerId, "_Your partner has left the chat",{ parse_mode: "Markdown" });
   }
 
   // Find new partner
@@ -111,14 +111,14 @@ bot.onText(/\/next/, async (msg) => {
     // await bot.sendMessage(newPartnerId, "Partner found! You can start chatting now.");
     await bot.sendMessage(
       userId,
-      "_It's a match 🐣_\n\n" +
+      "_It's a match 🐣_\n" +
       "_\\/next \\— Find new partner 🛑_\n" +
       "_\\/end \\— Leave partner topic 💬_",
       { parse_mode: "Markdown" }
     );
     await bot.sendMessage(
       partnerId,
-      "_It's a match 🐣_\n\n" +
+      "_It's a match 🐣_\n" +
       "_\\/next \\— Find new partner 🛑_\n" +
       "_\\/end \\— Leave partner topic 💬_",
       { parse_mode: "Markdown" }
