@@ -4,14 +4,18 @@ import { UserManager } from './UserManager.js';
 import { Logger } from './logger.js';
 import { AdminCommands } from './commands/adminCommands.js';
 import { MessageHandler } from './handlers/messageHandler.js';
+import { AdminBroadcast } from './services/adminBroadcast.js';
 import { getUserDisplayName } from './utils/userInfo.js';
 
 dotenv.config();
 
 const token = process.env.BOT_TOKEN;
+const adminIds = process.env.ADMIN_IDS ? process.env.ADMIN_IDS.split(',').map(id => Number(id)) : [];
+
 const bot = new TelegramBot(token, { polling: true });
 const userManager = new UserManager();
-const messageHandler = new MessageHandler(bot, userManager);
+const adminBroadcast = new AdminBroadcast(bot, adminIds);
+const messageHandler = new MessageHandler(bot, userManager, adminBroadcast);
 
 // Initialize admin commands
 const adminCommands = new AdminCommands(bot, userManager);
