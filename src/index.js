@@ -126,7 +126,7 @@ bot.onText(/\/next/, async (msg) => {
   } else {
     Logger.userAction(userId, 'WAITING_FOR_PARTNER', { userName, previous_partner: currentPartnerId });
     // await bot.sendMessage(userId, "Waiting for someone to join...");
-    await bot.sendMessage(userId, "_Finding a new partner 🤙_", { parse_mode: "Markdown" });
+    await bot.sendMessage(userId, "_Searching a new partner 🤙_", { parse_mode: "Markdown" });
 
   }
 });
