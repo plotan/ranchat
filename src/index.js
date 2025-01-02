@@ -51,7 +51,7 @@ bot.onText(/\/start/, async (msg) => {
     );
   } else {
     Logger.userAction(userId, 'WAITING_FOR_PARTNER', { userName });
-    await bot.sendMessage(userId, "_Searching a new partner 🤙_", { parse_mode: "Markdown" });
+    await bot.sendMessage(userId, "_Searching dev new partner 🤙_", { parse_mode: "Markdown" });
   }
 });
 
